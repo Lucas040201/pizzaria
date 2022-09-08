@@ -33,7 +33,12 @@
                 <input type="file" name="image" id="image" accept="image/*" class="form-control">
               </div>
 
-            <button type="submit" class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Cadastrar</button>
+              <div class="py-5">
+                <p class="pb-2">Imagem Atual</p>
+                <img style="max-width: 110px; max-height: 110px" src="{{url_for('static', filename='imagem/products/%s' % product.image)}}" alt="">
+              </div>
+
+            <button type="submit" class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Atualizar Produto</button>
           </form>
             {% else: %}
             <form method="post" action="{{ url_for('store_product') }}" enctype="multipart/form-data">

@@ -24,7 +24,20 @@ class ProductService(ServiceBase):
         stored_product = self.insert(product_info)
         return stored_product
 
+    def update_product(self, product_id, data, file):
+        if not self.__validate_info(data, file):
+            raise Exception
 
+        updated_info = {}
+
+        for info in data:
+            updated_info[info] = data[info]
+
+        if not file is None:
+            updated_info['image'] = self.__hash_image_and_move(file['image'])
+
+        updated = self.update(product_id, updated_info)
+        return updated
 
 
     def __hash_image_and_move(self, file):
@@ -37,7 +50,6 @@ class ProductService(ServiceBase):
         filename = secure_filename(hashed_filename)
         file.save(os.path.join("static/imagem/products/", filename))
         return filename
-
 
     def __validate_info(self, data, file):
         product = {
@@ -54,7 +66,8 @@ class ProductService(ServiceBase):
                 validated = False
                 break
 
-        if not 'image' in file or not file['image']:
-            return False
+        if not file is None:
+            if not 'image' in file or not file['image']:
+                return False
 
         return validated

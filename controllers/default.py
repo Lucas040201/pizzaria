@@ -70,7 +70,8 @@ def edit_user(user_id):
 
 @app.route('/listar-produtos', methods=['GET'])
 def list_products():
-    return render_template('list-products.html')
+    products = product_service.list()
+    return render_template('list-products.html', products=products)
 
 
 @app.route('/cadastrar-produto', methods=['GET', 'POST'])
@@ -85,23 +86,39 @@ def store_product():
             redirect('/cadastrar-produto')
 
         file = request.files
-
         inserted_product = product_service.insert_product(form, file)
-        return 'teste'
+        return redirect('/listar-produtos')
     except Exception as e:
-        print(e)
-        return 'exception'
+        flash('Erro ao cadastrar Produto')
+        return redirect('/cadastrar-produto')
 
 
 @app.route('/editar-produto/<product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
     if request.method == 'GET':
-        return render_template('store-product.html')
+        product = product_service.show(product_id)
+
+        if not product:
+            flash('Produto não encontrado')
+            return redirect('/listar-produtos')
+
+        return render_template('store-product.html', product=product)
 
     try:
+
+        data = request.form
+        file = request.files
+
+        if not file['image']:
+            file = None
+
+        updated = product_service.update_product(product_id, data, file)
+        print(f"/editar-produto/{product_id}")
         return redirect(f"/editar-produto/{product_id}")
-    except Exception as a:
-        pass
+    except Exception as e:
+        print(e)
+        flash('Erro ao atualizar Produto')
+        return redirect(f"/editar-produto/{product_id}")
 
 
 @app.route('/excluir-produto/<product_id>', methods=['GET'])

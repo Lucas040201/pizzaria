@@ -4,12 +4,13 @@ from app import db
 class Product(db.Model):
     __tablename__ = 'products'
 
-    def __init__(self, product_name, price, description, excerpt, image):
+    def __init__(self, product_name, price, description, excerpt, image=None):
         self.product_name = product_name
         self.price = price
         self.description = description
-        self.image = image
         self.excerpt = excerpt
+        if not image is None:
+            self.image = image
 
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String)
@@ -18,7 +19,5 @@ class Product(db.Model):
     excerpt = db.Column(db.String)
     image = db.Column(db.String)
 
-
     def __repr__(self):
         return f"Product product_name={self.product_name}"
-
