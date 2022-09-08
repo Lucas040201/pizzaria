@@ -23,6 +23,7 @@ class RepositoryBase(ABC):
     def insert(self, data):
         with self.create_handler() as db:
             try:
+                print(self.__model(**data))
                 instance = self.__model(**data)
                 db.session.add(instance)
                 db.session.commit()

@@ -3,12 +3,14 @@ from flask import render_template, request, flash, redirect
 
 from app.exceptions.user_exists import UserExists
 from app.infra.entities.role import Role
-from app.infra.entities.product import Product
 from app.services.address_service import AddressService
+from app.services.product_service import ProductService
 from app.services.user_service import UserService
 
 user_service = UserService()
 address_service = AddressService()
+product_service = ProductService()
+
 
 @app.route('/')
 def index():
@@ -65,3 +67,44 @@ def edit_user(user_id):
         flash('Erro ao atualizar usuário')
         return redirect('/listar-usuarios')
 
+
+@app.route('/listar-produtos', methods=['GET'])
+def list_products():
+    return render_template('list-products.html')
+
+
+@app.route('/cadastrar-produto', methods=['GET', 'POST'])
+def store_product():
+    if request.method == 'GET':
+        return render_template('store-product.html')
+
+    try:
+        form = request.form
+        if not 'image' in request.files:
+            flash('Por favor, insira uma imagem')
+            redirect('/cadastrar-produto')
+
+        file = request.files
+
+        inserted_product = product_service.insert_product(form, file)
+        return 'teste'
+    except Exception as e:
+        print(e)
+        return 'exception'
+
+
+@app.route('/editar-produto/<product_id>', methods=['GET', 'POST'])
+def edit_product(product_id):
+    if request.method == 'GET':
+        return render_template('store-product.html')
+
+    try:
+        return redirect(f"/editar-produto/{product_id}")
+    except Exception as a:
+        pass
+
+
+@app.route('/excluir-produto/<product_id>', methods=['GET'])
+def delete_product(product_id):
+    product_service.delete(product_id)
+    return redirect('/listar-produtos')

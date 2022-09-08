@@ -1,0 +1,74 @@
+{% include 'layout/header.html' %}
+
+  <section class="w-100 p-4 d-flex justify-content-center pb-4">
+      <div style="width: 26rem;">
+        <h1>Tierra Pizzaria - Cadastrar Produtos</h1>
+          <div class="tab-pane fade active show" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+            {% if product: %}
+            <form method="post" action="{{ url_for('edit_product', product_id=product.id) }}" enctype="multipart/form-data">
+              <div class="form-outline mb-4">
+                <label class="form-label" for="product_name" style="margin-left: 0px;">Nome do Produto</label>
+                <input value="{{product.product_name}}" type="text" name="product_name" id="product_name" class="form-control">
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="price" style="margin-left: 0px;">Preço</label>
+                <input value="{{product.price}}" type="text" name="price" id="price" class="form-control">
+              </div>
+
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="description" style="margin-left: 0px;">Descrição do produto</label>
+                <input value="{{product.description}}" type="text" name="description" id="description" class="form-control">
+              </div>
+
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="excerpt" style="margin-left: 0px;">Resumo do produto</label>
+                <input value="{{product.excerpt}}" type="text" name="excerpt" id="excerpt" class="form-control">
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="image" style="margin-left: 0px;">Imagem do Produto</label>
+                <input type="file" name="image" id="image" accept="image/*" class="form-control">
+              </div>
+
+            <button type="submit" class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Cadastrar</button>
+          </form>
+            {% else: %}
+            <form method="post" action="{{ url_for('store_product') }}" enctype="multipart/form-data">
+              <div class="form-outline mb-4">
+                <label class="form-label" for="product_name" style="margin-left: 0px;">Nome do Produto</label>
+                <input type="text" name="product_name" id="product_name" class="form-control">
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="price" style="margin-left: 0px;">Preço</label>
+                <input type="text" name="price" id="price" class="form-control">
+              </div>
+
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="description" style="margin-left: 0px;">Descrição do produto</label>
+                <input type="text" name="description" id="description" class="form-control">
+              </div>
+
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="excerpt" style="margin-left: 0px;">Resumo do produto</label>
+                <input type="text" name="excerpt" id="excerpt" class="form-control">
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="image" style="margin-left: 0px;">Imagem do Produto</label>
+                <input type="file" name="image" id="image" accept="image/*" class="form-control">
+              </div>
+
+            <button type="submit" class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Cadastrar</button>
+          </form>
+            {% endif %}
+          </div>
+      </div>
+  </section>
+
+{% include 'layout/footer.html' %}
