@@ -1,13 +1,13 @@
-./static/imagem/products/*
+/static/imagem/products/*
 
-./__pycache__
-./controllers/__pycache__
-./exceptions/__pycache__
-./infra/__pycache__
-./infra/repository/__pycache__
-./infra/entities/__pycache__
-./infra/configs/__pycache__
-./services/__pycache__
-./migrations/__pycache__
-./migrations/versions/__pycache__
+/__pycache__
+/controllers/__pycache__
+/exceptions/__pycache__
+/infra/__pycache__
+/infra/repository/__pycache__
+/infra/entities/__pycache__
+/infra/configs/__pycache__
+/services/__pycache__
+/migrations/__pycache__
+/migrations/versions/__pycache__
 
