@@ -1,0 +1,125 @@
+{% include 'layout/header.html' %}
+  <section class="w-100 p-4 d-flex justify-content-center pb-4">
+    <div style="width: 26rem;">
+      <h1>Tierra Pizzaria - Registrar</h1>
+      <div class="tab-content">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <div class="tab-pane fade active show" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+
+            {% if user and address %}
+          <form method="post" action="{{ url_for('edit_user', user_id=user.id) }}">
+            <input type="hidden" name="address_id" value="{{address.id}}">
+            <div class="form-outline mb-4">
+              <input value="{{user.name}}" type="text" name="name" id="name" class="form-control">
+              <label class="form-label" for="name" style="margin-left: 0px;">Nome</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input value="{{user.email}}" type="email" name="email" id="email" class="form-control">
+              <label class="form-label" for="email" style="margin-left: 0px;">Email</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input value="{{user.phone}}" type="text" name="phone" id="phone" class="form-control">
+              <label class="form-label" for="phone" style="margin-left: 0px;">Telefone</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input type="password" name="password" id="password" class="form-control">
+              <label class="form-label" for="password" style="margin-left: 0px;">senha</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input value="{{address.cep}}" type="text" name="cep" id="cep" class="form-control">
+              <label class="form-label" for="cep" style="margin-left: 0px;">CEP</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input value="{{address.district}}" type="text" name="district" id="district" class="form-control">
+              <label class="form-label" for="district" style="margin-left: 0px;">Bairro</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input value="{{address.street}}" type="text" name="street" id="street" class="form-control">
+              <label class="form-label" for="street" style="margin-left: 0px;">Rua</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input value="{{address.number}}" type="text" name="number" id="number" class="form-control">
+              <label class="form-label" for="number" style="margin-left: 0px;">Número</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input value="{{address.uf}}" type="text" name="uf" id="uf" class="form-control">
+              <label class="form-label" for="uf" style="margin-left: 0px;">Estado</label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Atualizar Dados</button>
+
+          </form>
+            {% else %}
+          <form method="post" action="{{ url_for('signup') }}">
+              <div class="form-outline mb-4">
+                <input type="text" name="name" id="name" class="form-control">
+                <label class="form-label" for="name" style="margin-left: 0px;">Nome</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="email" name="email" id="email" class="form-control">
+                <label class="form-label" for="email" style="margin-left: 0px;">Email</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="phone" id="phone" class="form-control">
+                <label class="form-label" for="phone" style="margin-left: 0px;">Telefone</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="password" name="password" id="password" class="form-control">
+                <label class="form-label" for="password" style="margin-left: 0px;">senha</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="cep" id="cep" class="form-control">
+                <label class="form-label" for="cep" style="margin-left: 0px;">CEP</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="district" id="district" class="form-control">
+                <label class="form-label" for="district" style="margin-left: 0px;">Bairro</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="street" id="street" class="form-control">
+                <label class="form-label" for="street" style="margin-left: 0px;">Rua</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="number" id="number" class="form-control">
+                <label class="form-label" for="number" style="margin-left: 0px;">Número</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="uf" id="uf" class="form-control">
+                <label class="form-label" for="uf" style="margin-left: 0px;">Estado</label>
+              </div>
+            <button type="submit" class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Registrar</button>
+
+          </form>
+            {% endif %}
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% include 'layout/footer.html' %}

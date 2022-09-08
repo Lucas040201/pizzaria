@@ -1,0 +1,38 @@
+{% include 'layout/header.html' %}
+
+    <section id="sobre" class="corpo">
+
+        <div class="container-fluid m-auto sobre" >
+            <div class="row align-items-start">
+              <div class="col-6">
+                <h3>
+                    PIZZARIA EM SÃO PAULO COM 30 ANOS DE TRADIÇÃO, PRIMANDO PELA QUALIDADE E UMA FARTA COMBINAÇÃO DE INGREDIENTES
+                </h3>
+                <p>
+                    Desde sua inauguração em 1987, a Tierra Pizzaria prima por sua qualidade. São 30 anos de tradição, trabalhando sempre com os melhores produtos e oferecendo um atendimento diferenciado. Hoje a Tierra Pizzaria está entre as melhores pizzarias de São Paulo. Caracterizada por sua massa fina e crocante, a pizza é coberta com as mais deliciosas e fartas combinações de ingredientes.
+                </p>
+                <p>
+                    Nossos produtos são assados em forno a lenha, o que confere à esta pizza um visual e sabor inigualáveis. Além de pizzas, hoje a Tierra Pizzaria também oferece calzones e baguetes, mantendo sempre a excelência de qualidade.
+                </p>
+                <p class="font-italic" style="font-size: 20px;">
+                    A Pizzaria Tierra conta com salão com capacidade para até 60 pessoas, atendimento para viagem, delivery e pedido online.
+                </p>
+              </div>
+              <div class="col-6">
+                <div class="imagemSobre"><img src="{{ url_for('static', filename="imagem/imagemSobre.jpg") }}" alt="pizza na lenha" width="660" height="450" ></div>
+              </div>
+
+            </div>
+        </div>
+        <div class="container-fluid  conhecaProdutos meioDois">
+            <div class="textconhecaProdutos text-center" >
+                <h3>CARDÁPIO</h3>
+                <h2>CONHEÇA O CARDÁPIO DA MAIS TRADICIONAL PIZZARIA DE SÃO PAULO</h2>
+                <p>Trabalhamos com excelentes produtos formando deliciosas e fartas combinações de ingredientes. Pizzas, calzones, baguetes, sobremesas e bebidas.</p>
+                <button type="button" class="btn btn-success">Conhecer nossas pizzas e +</button>
+            </div>
+        </div>
+
+    </section>
+
+{% include 'layout/footer.html' %}

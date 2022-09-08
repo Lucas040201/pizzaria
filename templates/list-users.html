@@ -1,0 +1,22 @@
+{% include 'layout/header.html' %}
+
+  <section class="container m-auto py-5">
+    <h3 class="py-3">Lista de Usuários</h3>
+    <div class="row">
+      <div class="col-md-2">ID</div>
+      <div class="col-md-2">Nome</div>
+      <div class="col-md-4">E-mail</div>
+      <div class="col-md-2">Ações</div>
+    </div>
+    {% for user in users %}
+    <div class="row py-1">
+      <div class="col-md-2">{{user.id}}</div>
+      <div class="col-md-2">{{user.name}}</div>
+      <div class="col-md-4">{{user.email}}</div>
+      <div class="col-md-2"> <a href="{{url_for('delete_user', user_id=user.id)}}">Excluir Usuário</a> </div>
+      <div class="col-md-2"><a href="{{url_for('edit_user', user_id=user.id)}}">Editar Usuário</a> </div>
+    </div>
+    {% endfor %}
+  </section>
+
+{% include 'layout/footer.html' %}
