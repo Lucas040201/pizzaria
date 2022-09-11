@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="pt-Br">
 <head>
     <meta charset="UTF-8">
@@ -44,3 +44,36 @@
         </div>
     </header>
     <main>
+
+        {% block content %}
+        {% endblock %}
+     </main>
+  <footer>
+    <div id="contato" class="container-fluid text-center bg-dark text-white m-30">
+        <h3>CONTATO</h3>
+        <p>
+            Av. Rudge, 315 - Bom Retiro, São Paulo | CEP 01133-000
+        </p>
+        <p>
+            WhatsApp: (11) 94023-1281
+        </p>
+        <p>
+            (11) 4555-5186 | (11) 4555-8255 | (11) 4555-7664
+        </p>
+        <p>
+            atendimento@Tierra.com.br
+        </p>
+        <p>
+            <button type="button" class="btn btn-outline-dark">Fale conosco</button>
+        </p>
+        <hr class="col-10 m-auto">
+        <p >
+            Produzido por Lucas Avelino e Lucas Mendes
+        </p>
+    </div>
+  </footer>
+
+    <!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
-{% include 'layout/header.html' %}
+{% extends 'layout/base.html' %}
+{% block content %}
 
   <section class="container m-auto py-5">
     <h3 class="py-3">Lista de Produtos</h3>
@@ -21,4 +22,4 @@
     {% endfor %}
   </section>
 
-{% include 'layout/footer.html' %}
+{% endblock %}
