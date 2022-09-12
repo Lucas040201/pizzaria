@@ -11,17 +11,23 @@ user_service = UserService()
 address_service = AddressService()
 product_service = ProductService()
 
-
+@app.route('/index')
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/inscrever-se', methods=['POST', 'GET'])
-def signup():
-    if request.method == 'GET':
-        return render_template('signup.html')
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
 
+@app.route('/inscrever-se', methods=['GET'])
+def signup():
+    return render_template('signup.html')
+
+
+@app.route('/cadastrar-action', methods=['POST'])
+def signup_action():
     try:
         form = request.form
         user = user_service.insert_user(form)
@@ -35,7 +41,6 @@ def signup():
     except Exception as e:
         flash('Erro ao cadastrar um novo usuário')
         return redirect('/inscrever-se')
-
 
 @app.route('/listar-usuarios', methods=['GET'])
 def list_users():
@@ -51,12 +56,13 @@ def delete_user(user_id):
     return redirect('/listar-usuarios')
 
 
-@app.route('/editar-usuarios/<user_id>', methods=['GET', 'POST'])
+@app.route('/editar-usuario/<user_id>', methods=['GET'])
 def edit_user(user_id):
-    if request.method == 'GET':
-        user, address = user_service.select_user_with_address(user_id)
-        return render_template('signup.html', user=user, address=address)
+    user, address = user_service.select_user_with_address(user_id)
+    return render_template('signup.html', user=user, address=address)
 
+@app.route('/editar-usuario-action/<user_id>', methods=['POST'])
+def edit_user_action(user_id):
     try:
         form = request.form
         address_id = form['address_id']

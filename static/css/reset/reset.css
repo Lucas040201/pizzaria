@@ -1,0 +1,13 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+}
+
+html, body {
+    font-size: 62.5%;
+    font-family: helvetica, arial;
+    height: 100%;
+    width: 100%;
+}

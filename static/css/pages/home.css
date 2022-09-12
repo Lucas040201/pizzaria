@@ -1,0 +1,95 @@
+.banner {
+    padding: 30rem 0;
+    position: relative;
+    border-bottom: .2rem solid #F88709;
+}
+.banner__background {
+    position: absolute;
+    background-image: url("../../imgs/pizza_bg.jpg");
+    background-size: cover;
+    background-position: bottom;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 1;
+    filter: brightness(80%);
+}
+.banner__container {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 2;
+}
+
+.banner__call {
+    max-width: 35rem;
+}
+
+.banner__call h2 {
+    font-size: 4.6rem;
+    color: #fff;
+    padding-bottom: 2rem;
+}
+
+.about {
+    padding: 8rem 0 ;
+}
+
+.about__container {
+    display: flex;
+}
+
+.about__content {
+    flex: 1;
+    color: #666;
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 2rem;
+}
+
+.about__content p {
+    padding: 1rem 0;
+}
+
+.about__image {
+    flex: 1;
+    display: flex;
+}
+
+.about__figure {
+    flex: 1 40rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.about__figure img {
+    width: 90%;
+    border-radius: 1rem;
+}
+
+.menu {
+    background-color: #222;
+    padding: 8rem;
+}
+
+.menu .sec__title {
+    color: #fff;
+}
+
+.menu__container {
+    display: flex;
+}
+
+.menu__image{
+    flex: 1;
+}
+
+.menu__content {
+    flex: 2;
+}
+
+.menu__figure {
+    flex: 1 30rem;
+}

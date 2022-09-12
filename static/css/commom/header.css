@@ -1,0 +1,54 @@
+.header {
+    position: fixed;
+    z-index: 99;
+    background-color: rgba(0,0,0, 0.6);
+    width: 100%;
+    padding: 2rem 0;
+}
+
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__title a {
+    font-size: 3rem;
+    color: #F88709;
+}
+
+.header__nav {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+}
+
+.header__link {
+    color: #fff;
+    font-size: 1.6rem;
+    padding: 1rem;
+    margin-left: 1rem;
+    font-weight: bold;
+}
+
+.header__link.active, .header__link:hover {
+    color: #FFC27C;
+}
+
+.header__actions {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+.header__login.btn {
+    max-width: 10rem;
+    width: 100%;
+}
+
+.header__signup {
+    color: #fff;
+    font-size: 1.6rem;
+    padding: 1rem;
+    margin-left: 1rem;
+}
