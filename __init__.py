@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf import CSRFProtect
@@ -12,4 +12,5 @@ db = SQLAlchemy(app, session_options={
 })
 migrate = Migrate(app, db)
 
-from app.controllers import default
+from app.controllers import default, user, products
+

@@ -1,13 +1,11 @@
 {% extends 'layout/base.html' %}
 {% block content %}
-
-
   <section class="w-100 p-4 d-flex justify-content-center pb-4">
       <div style="width: 26rem;">
         <h1>Tierra Pizzaria - Cadastrar Produtos</h1>
           <div class="tab-pane fade active show" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
             {% if product: %}
-            <form method="post" action="{{ url_for('edit_product', product_id=product.id) }}" enctype="multipart/form-data">
+            <form method="post" action="{{ url_for('edit_product_action', product_id=product.id) }}" enctype="multipart/form-data">
               <div class="form-outline mb-4">
                 <label class="form-label" for="product_name" style="margin-left: 0px;">Nome do Produto</label>
                 <input value="{{product.product_name}}" type="text" name="product_name" id="product_name" class="form-control">
@@ -43,7 +41,7 @@
             <button type="submit" class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Atualizar Produto</button>
           </form>
             {% else: %}
-            <form method="post" action="{{ url_for('store_product') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ url_for('store_product_action') }}" enctype="multipart/form-data">
               <div class="form-outline mb-4">
                 <label class="form-label" for="product_name" style="margin-left: 0px;">Nome do Produto</label>
                 <input type="text" name="product_name" id="product_name" class="form-control">
