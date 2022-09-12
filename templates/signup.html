@@ -45,25 +45,23 @@
       <form action="{{url_for('signup_action')}}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label class="form__label" for="name">Nome</label>
-        <input class="form__input" type="text" id="name" name="email" placeholder="Digite o seu nome">
+        {{form.name(class="form__input", placeholder="Digite o seu nome", id="name")}}
         <label class="form__label" for="email">E-mail</label>
-        <input class="form__input" type="email" id="email" name="email" placeholder="Digite o seu E-mail">
+        {{form.email(class="form__input", placeholder="Digite o seu email", id="email")}}
         <label class="form__label" for="password">Senha</label>
-        <input class="form__input" type="password" id="password" name="password" placeholder="Digite a sua senha">
+        {{form.password(class="form__input", placeholder="Digite a sua senha", id="password")}}
         <label class="form__label" for="phone">Telefone</label>
-        <input class="form__input" type="text" id="phone" name="phone" placeholder="Digite o seu telefone">
+        {{form.phone(class="form__input", placeholder="Digite o seu telefone", id="phone")}}
         <label class="form__label" for="cep">CEP</label>
-        <input class="form__input" type="text" id="cep" name="cep" placeholder="Digite o seu CEP">
+        {{form.cep(class="form__input", placeholder="Digite o CEP", id="cep")}}
         <label class="form__label" for="district">Bairro</label>
-        <input class="form__input" type="text" id="district" name="district" placeholder="Digite o seu bairro">
+        {{form.district(class="form__input", placeholder="Digite o Bairro", id="district")}}
         <label class="form__label" for="street">Rua</label>
-        <input class="form__input" type="text" id="street" name="street" placeholder="Digite o nome da rua">
+        {{form.street(class="form__input", placeholder="Digite a Rua", id="street")}}
         <label class="form__label" for="number">Número</label>
-        <input class="form__input" type="text" id="number" name="number" placeholder="Digite o número da residencia">
+        {{form.number(class="form__input", placeholder="Digite o Número", id="number")}}
         <label class="form__label" for="uf">UF</label>
-        <select class="form__input" name="uf" id="uf">
-          <option>Estado</option>
-        </select>
+        {{form.uf(class="form__input", id="uf")}}
         <button class="btn btn--form" type="submit">Cadastrar</button>
       </form>
       {% endif %}
