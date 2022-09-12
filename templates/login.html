@@ -11,11 +11,12 @@
             </div>
             <div class="login__form">
                 <h2 class="form__title">Faça seu Login</h2>
-                <form action="#" method="post" >
+                <form action="{{url_for('login_action')}}" method="post" >
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <label class="form__label" for="email">E-mail:</label>
-                    <input class="form__input" type="email" id="email" name="email" placeholder="Digite o seu E-mail">
+                    {{form.email(class="form__input", type="email", id="email", placeholder="Digite o Seu e-mail")}}
                     <label class="form__label" for="password">Senha</label>
-                    <input class="form__input" type="password" id="password" name="password" placeholder="Digite a sua senha">
+                    {{form.password(class="form__input", id="password", placeholder="Digite a sua senha", type="password")}}
                     <button class="btn btn--form" type="submit">Entrar</button>
                 </form>
             </div>

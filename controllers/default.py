@@ -6,6 +6,7 @@ from app.infra.entities.role import Role
 from app.services.address_service import AddressService
 from app.services.product_service import ProductService
 from app.services.user_service import UserService
+from app.infra.forms.login import Login
 
 user_service = UserService()
 address_service = AddressService()
@@ -19,7 +20,15 @@ def index():
 
 @app.route('/login', methods=['GET'])
 def login():
-    return render_template('login.html')
+    form = Login()
+    return render_template('login.html', form=form)
+
+@app.route('/login-action', methods=['POST'])
+def login_action():
+    form_submited = request.form
+    form = Login(form_submited)
+    if(form.validate()):
+        return """RECEBA"""
 
 @app.route('/inscrever-se', methods=['GET'])
 def signup():
