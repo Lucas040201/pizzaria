@@ -2,7 +2,7 @@
 
 /__pycache__
 /controllers/__pycache__
-/exceptions/__pycache__
+/infra/exceptions/__pycache__
 /infra/__pycache__
 /infra/repository/__pycache__
 /infra/entities/__pycache__

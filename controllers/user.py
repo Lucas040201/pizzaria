@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, request, flash, redirect, url_for
 
-from app.exceptions.user_exists import UserExists
+from app.infra.exceptions.user_exists import UserExists
 from app.services.address_service import AddressService
 from app.services.user_service import UserService
 from app.infra.forms.login_form import LoginForm

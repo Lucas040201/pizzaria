@@ -1,7 +1,7 @@
-from app.exceptions.user_not_found import UserNotFound
+from app.infra.exceptions.user_not_found import UserNotFound
 from app.infra.repository.user_repository import UserRepository
 from app.services.service_base import ServiceBase
-from app.exceptions.user_exists import UserExists
+from app.infra.exceptions.user_exists import UserExists
 import bcrypt
 
 
