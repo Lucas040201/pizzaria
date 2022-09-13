@@ -1,23 +1,29 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-  <section class="container m-auto py-5">
-    <h3 class="py-3">Lista de Usuários</h3>
-    <div class="row">
-      <div class="col-md-2">ID</div>
-      <div class="col-md-2">Nome</div>
-      <div class="col-md-4">E-mail</div>
-      <div class="col-md-2">Ações</div>
-    </div>
-    {% for user in users %}
-    <div class="row py-1">
-      <div class="col-md-2">{{user.id}}</div>
-      <div class="col-md-2">{{user.name}}</div>
-      <div class="col-md-4">{{user.email}}</div>
-      <div class="col-md-2"> <a href="{{url_for('delete_user', user_id=user.id)}}">Excluir Usuário</a> </div>
-      <div class="col-md-2"><a href="{{url_for('edit_user', user_id=user.id)}}">Editar Usuário</a> </div>
-    </div>
-    {% endfor %}
-  </section>
+    <main>
+        <section class="list">
+          <div class="list__container wrapper">
+            <h3 class="list__title">Lista de Usuários</h3>
+            <div class="list__row list__row--header">
+              <div class="list__item"><span>ID</span></div>
+              <div class="list__item"><span>Nome</span></div>
+              <div class="list__item"><span>E-mail</span></div>
+              <div class="list__item"><span>Ações</span></div>
+            </div>
+            {% for user in users %}
+              <div class="list__row">
+                <div class="list__item"><span>ID</span></div>
+                <div class="list__item"><span>Nome</span></div>
+                <div class="list__item"><span>E-mail</span></div>
+                <div class="list__item">
+                  <a href="{{url_for('delete_user', user_id=user.id)}}">Excluir Usuário</a>
+                  <a href="{{url_for('edit_user', user_id=user.id)}}">Editar Usuário</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+    </main>
 
 {% endblock %}

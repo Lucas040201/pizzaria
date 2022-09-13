@@ -11,14 +11,14 @@ class ServiceBase(ABC):
     def list(self):
         return self.__repository.list()
 
-    def insert(self, data):
+    def insert(self, data: {}):
         return self.__repository.insert(data)
 
-    def delete(self, instance_id):
+    def delete(self, instance_id: int):
         return self.__repository.delete(instance_id)
 
-    def update(self, instance, data):
-        return self.__repository.update(instance, data)
+    def update(self, instance_id: int, data: {}):
+        return self.__repository.update(instance_id, data)
 
-    def show(self, instance_id):
+    def show(self, instance_id: int):
         return self.__repository.show(instance_id)

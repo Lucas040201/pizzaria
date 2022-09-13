@@ -1,5 +1,6 @@
-from app import app
 from flask import render_template, request, flash, redirect, url_for
+from flask_login import login_user, logout_user
+from app import app
 
 from app.infra.exceptions.user_exists import UserExists
 from app.services.address_service import AddressService
@@ -14,7 +15,7 @@ address_service = AddressService()
 @app.route('/login', methods=['GET'])
 def login():
     form = LoginForm()
-    return render_template('login.html', form=form,  title="Fazer Login")
+    return render_template('login.html', form=form, title="Fazer Login")
 
 
 @app.route('/login-action', methods=['POST'])
@@ -22,7 +23,13 @@ def login_action():
     form_submited = request.form
     form = LoginForm(form_submited)
     if form.validate():
-        return """tem nada aqui"""
+        user = user_service.get_user_by_email(form_submited['email'])
+        if user and user_service.check_login(user, form_submited['password']):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return 'senha invalida'
+    return 'arroz'
 
 
 @app.route('/inscrever-se', methods=['GET'])
@@ -61,7 +68,7 @@ def list_users():
 
 @app.route('/excluir-usuario/<user_id>', methods=['GET'])
 def delete_user(user_id):
-    user, address = user_service.select_user_with_address(user_id)
+    user, address = user_service.get_user_with_address(user_id)
     address_service.delete(address.id)
     user_service.delete(user.id)
     return redirect(url_for('list_users'))
@@ -69,7 +76,7 @@ def delete_user(user_id):
 
 @app.route('/editar-usuario/<user_id>', methods=['GET'])
 def edit_user(user_id):
-    user, address = user_service.select_user_with_address(user_id)
+    user, address = user_service.get_user_with_address(user_id)
     return render_template('signup.html', user=user, address=address, title="Editar Usuário")
 
 
@@ -86,3 +93,9 @@ def edit_user_action(user_id):
     except Exception as e:
         flash('Erro ao atualizar usuário')
         return redirect(url_for('list_users'))
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('index')

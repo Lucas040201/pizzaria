@@ -20,7 +20,7 @@ class RepositoryBase(ABC):
             data = db.session.query(self.__model).all()
         return data
 
-    def insert(self, data):
+    def insert(self, data: {}):
         with self.create_handler() as db:
             try:
                 print(self.__model(**data))
@@ -32,7 +32,7 @@ class RepositoryBase(ABC):
             except:
                 db.session.rollback()
 
-    def delete(self, instance_id):
+    def delete(self, instance_id: int):
         with self.create_handler() as db:
             try:
                 deleted = db.session.query(self.__model).filter(self.__model.id == instance_id).delete()
@@ -41,7 +41,7 @@ class RepositoryBase(ABC):
             except:
                 db.session.rollback()
 
-    def update(self, instance_id, data):
+    def update(self, instance_id: int, data: {}):
         with self.create_handler() as db:
             try:
                 instance = db.session.query(self.__model).filter(self.__model.id == instance_id).update(data)
@@ -50,7 +50,7 @@ class RepositoryBase(ABC):
             except:
                 db.session.rollback()
 
-    def show(self, instance_id):
+    def show(self, instance_id: int):
         with self.create_handler() as db:
             try:
                 data = db.session.query(self.__model).filter(self.__model.id == instance_id).first()

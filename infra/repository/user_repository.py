@@ -8,12 +8,12 @@ class UserRepository(RepositoryBase):
     def __init__(self):
         super(UserRepository, self).__init__(User)
 
-    def select_by_email(self, email):
+    def get_user_by_email(self, email):
         with self.create_handler() as db:
             data = db.session.query(User).filter(User.email == email).first()
             return data
 
-    def select_user_with_address(self, user_id):
+    def get_user_with_address(self, user_id):
         with self.create_handler() as db:
             data = db.session.query(User) \
                 .join(Address, Address.user_id == User.id) \

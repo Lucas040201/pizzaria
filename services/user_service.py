@@ -2,6 +2,9 @@ from app.infra.exceptions.user_not_found import UserNotFound
 from app.infra.repository.user_repository import UserRepository
 from app.services.service_base import ServiceBase
 from app.infra.exceptions.user_exists import UserExists
+from app.infra.entities.user import User
+from app.infra.entities.address import Address
+from werkzeug.security import generate_password_hash, check_password_hash
 import bcrypt
 
 
@@ -9,14 +12,14 @@ class UserService(ServiceBase):
     def __init__(self):
         super(UserService, self).__init__(UserRepository())
 
-    def insert_user(self, data):
+    def insert_user(self, data: []) -> User:
 
-        user = self.repository().select_by_email(data['email'])
+        user = self.repository().get_user_by_email(data['email'])
 
         if user:
             raise UserExists()
 
-        password, salt = self.__generate_password(data['password'])
+        password = generate_password_hash(data['password'])
 
         role_id = 2
         if 'role_id' in data:
@@ -28,14 +31,13 @@ class UserService(ServiceBase):
             "email": data['email'],
             "phone": data['phone'],
             "role_id": role_id,
-            "salt": salt
         }
 
         stored_user = self.insert(new_user)
         return stored_user
 
-    def select_user_with_address(self, user_id):
-        items = self.repository().select_user_with_address(user_id)
+    def get_user_with_address(self, user_id: int) -> {User, Address}:
+        items = self.repository().get_user_with_address(user_id)
         if not items:
             raise Exception
 
@@ -43,7 +45,7 @@ class UserService(ServiceBase):
         address = items[1]
         return user, address
 
-    def update_user(self, user_id, data):
+    def update_user(self, user_id: int, data: []):
         user = self.show(user_id)
 
         if not user:
@@ -62,8 +64,15 @@ class UserService(ServiceBase):
 
         return updated_user
 
-    def __generate_password(self, password):
+    def __generate_password(self, password: str) -> str:
         salt = bcrypt.gensalt()
         password = password.encode('utf8')
         password = bcrypt.hashpw(password, salt)
         return password, salt
+
+    def get_user_by_email(self, email: str) -> User:
+        return self.repository().get_user_by_email(email)
+
+    def check_login(self, user: User, password: str) -> bool:
+        return check_password_hash(user.password, password)
+
