@@ -18,6 +18,7 @@ migrate = Migrate(app, db)
 
 
 def is_admin(func):
+    """Verify if current user is an admin"""
 
     def wrapper(*args, **kwargs):
         if not current_user.role_id == 1:

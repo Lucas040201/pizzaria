@@ -16,10 +16,10 @@
         <nav class="header__nav">
             <a class="header__link active" href="{{url_for('index')}}">Home</a>
             <a class="header__link" href="{{url_for('index')}}#sobre">Sobre</a>
-            <a class="header__link" href="#">Produtos</a>
-            <a class="header__link" href="#">Contato</a>
+            <a class="header__link" href="{{url_for('list_products')}}">Produtos</a>
+<!--            <a class="header__link" href="#">Contato</a>-->
             {% if current_user.is_authenticated %}
-                <a class="header__link" href="#">Perfil</a>
+                <a class="header__link" href="{{url_for('edit_user')}}">Perfil</a>
                 <a class="header__link" href="#">Pedidos</a>
             {% endif %}
         </nav>
