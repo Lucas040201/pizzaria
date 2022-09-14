@@ -19,13 +19,14 @@ migrate = Migrate(app, db)
 
 def is_admin(func):
 
-    def wrapper_func(*args, **kwargs):
+    def wrapper(*args, **kwargs):
         if not current_user.role_id == 1:
             return redirect(url_for('index'))
 
         return True
 
-    return wrapper_func
+    wrapper.__name__ = func.__name__
+    return wrapper
 
 from app.controllers import default, user, products
 

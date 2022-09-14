@@ -69,7 +69,9 @@ def list_users():
 
 
 @app.route('/excluir-usuario/<user_id>', methods=['GET'])
-def delete_user(user_id):
+@login_required
+@is_admin
+def delete_user(user_id: int):
     user, address = user_service.get_user_with_address(user_id)
     address_service.delete(address.id)
     user_service.delete(user.id)
@@ -77,12 +79,14 @@ def delete_user(user_id):
 
 
 @app.route('/editar-usuario/<user_id>', methods=['GET'])
+@login_required
 def edit_user(user_id):
     user, address = user_service.get_user_with_address(user_id)
     return render_template('signup.html', user=user, address=address, title="Editar Usuário")
 
 
 @app.route('/editar-usuario-action/<user_id>', methods=['POST'])
+@login_required
 def edit_user_action(user_id):
     try:
         request_form = request.form
