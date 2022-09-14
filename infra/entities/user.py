@@ -6,6 +6,7 @@ from flask_login import UserMixin
 def get_user(user_id):
     return User.query.filter_by(id=user_id).first()
 
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -23,6 +24,9 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     address = db.relationship('Address', backref=db.backref('users'), lazy='subquery')
+
+    def is_admin(self):
+        return self.role_id == 1
 
     def __repr__(self):
         return f"[User name={self.name} email={self.email}]"
