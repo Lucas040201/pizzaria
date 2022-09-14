@@ -1,4 +1,6 @@
-from flask import Flask, Blueprint, redirect, url_for
+from functools import wraps
+
+from flask import Flask, Blueprint, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf import CSRFProtect
@@ -19,13 +21,11 @@ migrate = Migrate(app, db)
 
 def is_admin(func):
     """Verify if current user is an admin"""
-
+    @wraps(func)
     def wrapper(*args, **kwargs):
-        if not current_user.role_id == 1:
+        if not current_user.is_admin():
             return redirect(url_for('index'))
-
-        return True
-
+        return func(*args, **kwargs)
     wrapper.__name__ = func.__name__
     return wrapper
 
