@@ -1,8 +1,8 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf import CSRFProtect
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 
 app = Flask(__name__)
 app.config.from_object('app.config')
@@ -13,7 +13,19 @@ db = SQLAlchemy(app, session_options={
 })
 
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 migrate = Migrate(app, db)
+
+
+def is_admin(func):
+
+    def wrapper_func(*args, **kwargs):
+        if not current_user.role_id == 1:
+            return redirect(url_for('index'))
+
+        return True
+
+    return wrapper_func
 
 from app.controllers import default, user, products
 

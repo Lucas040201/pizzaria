@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user
-from app import app
+from flask_login import login_user, logout_user, login_required
+from app import app, is_admin
 
 from app.infra.exceptions.user_exists import UserExists
 from app.services.address_service import AddressService
@@ -61,6 +61,8 @@ def signup_action():
 
 
 @app.route('/listar-usuarios', methods=['GET'])
+@login_required
+@is_admin
 def list_users():
     users = user_service.list()
     return render_template('list-users.html', users=users, title="Listar Usuários")
