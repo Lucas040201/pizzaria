@@ -49,7 +49,6 @@ def signup_action():
     try:
         request_form = request.form
         form = UserForm(request_form)
-        print(form.errors)
         if form.validate():
             user = user_service.insert_user(request_form)
             address_service.insert_address(user, request_form)
@@ -61,7 +60,6 @@ def signup_action():
         return redirect(url_for('signup'))
 
     except Exception as e:
-        print(e)
         flash('Erro ao cadastrar um novo usuário')
         return redirect(url_for('signup'))
 

@@ -1,8 +1,10 @@
 from app import app, is_admin
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from app.services.product_service import ProductService
 
+
+from app.services.product_service import ProductService
+from app.infra.forms.product_form import ProductForm
 product_service = ProductService()
 
 
@@ -10,7 +12,7 @@ product_service = ProductService()
 def list_products():
     """List all products"""
     products = product_service.list()
-    return render_template('list-products.html', products=products)
+    return render_template('list-products.html', products=products, title="Produtos")
 
 
 @app.route('/cadastrar-produto', methods=['GET'])
@@ -18,7 +20,8 @@ def list_products():
 @is_admin
 def store_product():
     """Store product view"""
-    return render_template('store-product.html')
+    form = ProductForm()
+    return render_template('store-product.html', form=form, title="Cadastrar Produto")
 
 
 @app.route('/cadastrar-produto-action', methods=['POST'])
@@ -27,15 +30,15 @@ def store_product():
 def store_product_action():
     """Action for store product"""
     try:
-        form = request.form
-        if not 'image' in request.files:
-            flash('Por favor, insira uma imagem')
-            redirect(url_for('store_product'))
-
-        file = request.files
-        inserted_product = product_service.insert_product(form, file)
-        return redirect(url_for('list_products'))
+        form_request = request.form
+        form = ProductForm(request)
+        if form.validate():
+            inserted_product = product_service.insert_product(form_request, request.files)
+            return redirect(url_for('list_products'))
+        flash('Campos invalidos')
+        return redirect(url_for('store_product'))
     except Exception as e:
+        print(e)
         flash('Erro ao cadastrar Produto')
         return redirect(url_for('store_product'))
 
@@ -51,7 +54,7 @@ def edit_product(product_id):
         flash('Produto não encontrado')
         return redirect(url_for('store_product'))
 
-    return render_template('store-product.html', product=product)
+    return render_template('store-product.html', product=product, title="Editar Produto")
 
 
 @app.route('/editar-produto-action/<product_id>', methods=['POST'])
