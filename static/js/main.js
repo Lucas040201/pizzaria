@@ -49,8 +49,8 @@ $(function(){
                     products.push(currentProduct);
                     localStorage.setItem('products', JSON.stringify(products));
                }
-               checkCartQuantity();
            }
+            checkCartQuantity();
         });
     }
 
@@ -59,8 +59,11 @@ $(function(){
     function checkCartQuantity() {
         const cart = $('.cart').find('span');
         const items = JSON.parse(localStorage.getItem('products'));
+        if (!items) return;
         let quantity = 0;
+        console.log(items.length)
         if(items.length === 1) {
+            console.log('aqui')
            quantity = items[0].quantity;
         } else {
             quantity = items.reduce((prevValue, prod) => {

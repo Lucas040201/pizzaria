@@ -104,7 +104,7 @@ def edit_user(user_id: int):
 def edit_profile():
     """Edit profile of current user"""
     user, address = user_service.get_user_with_address(current_user.id)
-    form = UserForm
+    form = UserForm()
     return render_template('signup.html', user=user, address=address, title="Editar Perfil", form=form)
 
 
