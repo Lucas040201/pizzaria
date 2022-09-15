@@ -6,13 +6,13 @@
         <div class="product__container wrapper">
             <h2 class="sec__title sec__title--line">Produtos</h2>
 
-        {% if current_user.is_admin() %}
+        {% if current_user.is_authenticated and current_user.is_admin() %}
             <a class="product__new" href="{{ url_for('store_product') }}">Cadastrar Produto</a>
         {% endif %}
             <div class="product__box">
                 {% for product in products %}
                     <div class="product__item">
-                    {% if current_user.is_admin() %}
+                    {% if current_user.is_authenticated and current_user.is_admin() %}
                         <div class="product__action">
                             <a href="{{ url_for('edit_product', product_id=product.id) }}">Editar Produto</a>
                             <a href="{{ url_for('delete_product', product_id=product.id) }}">Excluir Produto</a>
@@ -24,7 +24,9 @@
                         <p class="product__name">{{product.product_name}}</p>
                         <p class="product__excerpt">{{product.excerpt}}</p>
                         <p class="product__price"><span>R$</span>{{product.price}}</p>
-                        <span class="product__add" data-product="{{ product.id }}">Add carrinho</span>
+                        {% if current_user.is_authenticated %}
+                            <span class="product__add" data-product="{{ product.id }}">Add carrinho</span>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
