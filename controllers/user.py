@@ -92,7 +92,8 @@ def edit_user(user_id: int):
     """Edit an User"""
     try:
         user, address = user_service.get_user_with_address(user_id)
-        return render_template('signup.html', user=user, address=address, title="Editar Usuário")
+        form = UserForm()
+        return render_template('signup.html', user=user, address=address, title="Editar Usuário", form=form)
     except UserNotFound as e:
         flash('Usuário não encontrado')
         return redirect(url_for('list_users'))
@@ -103,7 +104,8 @@ def edit_user(user_id: int):
 def edit_profile():
     """Edit profile of current user"""
     user, address = user_service.get_user_with_address(current_user.id)
-    return render_template('signup.html', user=user, address=address, title="Editar Perfil")
+    form = UserForm
+    return render_template('signup.html', user=user, address=address, title="Editar Perfil", form=form)
 
 
 @app.route('/editar-perfil-action', methods=['POST'])
@@ -118,6 +120,8 @@ def edit_profile_action():
             user_service.update_user(current_user.id, form)
             address_service.update_address(address_id, form)
             return redirect(url_for('edit_user', user_id=current_user.id))
+        flash('Campos invalidos')
+        return redirect(url_for('edit_profile'))
     except Exception as e:
         flash('Erro ao atualizar usuário')
         return redirect(url_for('list_users'))

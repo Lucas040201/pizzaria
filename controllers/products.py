@@ -37,7 +37,6 @@ def store_product_action():
         flash('Campos invalidos')
         return redirect(url_for('store_product'))
     except Exception as e:
-        print(e)
         flash('Erro ao cadastrar Produto')
         return redirect(url_for('store_product'))
 
@@ -48,12 +47,13 @@ def store_product_action():
 def edit_product(product_id):
     """Edit product view"""
     product = product_service.show(product_id)
+    form = ProductForm()
 
     if not product:
         flash('Produto não encontrado')
         return redirect(url_for('store_product'))
 
-    return render_template('store-product.html', product=product, title="Editar Produto")
+    return render_template('store-product.html', product=product, title="Editar Produto", form=form)
 
 
 @app.route('/editar-produto-action/<product_id>', methods=['POST'])
@@ -81,4 +81,4 @@ def edit_product_action(product_id):
 def delete_product(product_id):
     """Delete product"""
     product_service.delete(product_id)
-    return redirect(url_for('store_product'))
+    return redirect(url_for('list_products'))

@@ -20,13 +20,13 @@
         <form action="{{ url_for('edit_product_action', product_id=product.id) }}" method="post" enctype="multipart/form-data">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <label class="form__label" for="product_name">Nome do Produto</label>
-          {{form.product_name(class="form__input", placeholder="Digite o Nome do Produto", id="product_name", value="product.product_name")}}
+          {{form.product_name(class="form__input", placeholder="Digite o Nome do Produto", id="product_name", value=product.product_name)}}
           <label class="form__label" for="price">Preço</label>
-          {{form.price(class="form__input", placeholder="Digite o Preço", id="price", type="number", value="product.number")}}
+          {{form.price(class="form__input", placeholder="Digite o Preço", id="price", type="number", value=product.price)}}
           <label class="form__label" for="description">Descrição</label>
-          {{form.description(class="form__input", placeholder="Digite a Descrição do Produto", id="description", value="product.description")}}
+          {{form.description(class="form__input", placeholder="Digite a Descrição do Produto", id="description", value=product.description)}}
           <label class="form__label" for="excerpt">Resumo</label>
-          {{form.excerpt(class="form__input", placeholder="Digite o Resumo do Produto", id="excerpt", value="product.excerpt")}}
+          {{form.excerpt(class="form__input", placeholder="Digite o Resumo do Produto", id="excerpt", value=product.excerpt)}}
           <label class="form__label" for="image">Imagem</label>
           {{form.image(class="form__input", id="image")}}
 
@@ -35,7 +35,7 @@
             <img style="max-width: 110px; max-height: 110px" src="{{url_for('static', filename='imgs/products/%s' % product.image)}}" alt="">
           </div>
 
-          <button class="btn btn--form" type="submit">Cadastrar Produto</button>
+          <button class="btn btn--form btn-medium" type="submit">Atualizar Produto</button>
         </form>
       {% else: %}
             <h2 class="form__title">Cadastrar Produto</h2>

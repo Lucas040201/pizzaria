@@ -26,26 +26,24 @@
 
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label class="form__label" for="name">Nome</label>
-        <input class="form__input" value="{{ user.name }}" type="text" id="name" name="email" placeholder="Digite o seu nome">
+        {{form.name(class="form__input", placeholder="Digite o seu nome", id="name", value=user.name)}}
         <label class="form__label" for="email">E-mail</label>
-        <input class="form__input" value="{{ user.email }}" type="email" id="email" name="email" placeholder="Digite o seu E-mail">
+        {{form.email(class="form__input", placeholder="Digite o seu email", id="email", value=user.email)}}
         <label class="form__label" for="password">Senha</label>
-        <input class="form__input" type="password" id="password" name="password" placeholder="Digite a sua senha">
+        {{form.password(class="form__input", placeholder="Digite a sua senha", id="password")}}
         <label class="form__label" for="phone">Telefone</label>
-        <input class="form__input" value="{{ user.phone }}" type="text" id="phone" name="phone" placeholder="Digite o seu telefone">
+        {{form.phone(class="form__input", placeholder="Digite o seu telefone", id="phone", value=user.phone)}}
         <label class="form__label" for="cep">CEP</label>
-        <input class="form__input" value="{{ address.cep }}" type="text" id="cep" name="cep" placeholder="Digite o seu CEP">
+        {{form.cep(class="form__input", placeholder="Digite o CEP", id="cep", value=address.cep)}}
         <label class="form__label" for="district">Bairro</label>
-        <input class="form__input" value="{{ address.district }}" type="text" id="district" name="district" placeholder="Digite o seu bairro">
+        {{form.district(class="form__input", placeholder="Digite o Bairro", id="district", value=address.district)}}
         <label class="form__label" for="street">Rua</label>
-        <input class="form__input" value="{{ address.street }}" type="text" id="street" name="street" placeholder="Digite o nome da rua">
+        {{form.street(class="form__input", placeholder="Digite a Rua", id="street", value=address.street)}}
         <label class="form__label" for="number">Número</label>
-        <input class="form__input" value="{{ address.number }}" type="text" id="number" name="number" placeholder="Digite o número da residencia">
+        {{form.number(class="form__input", placeholder="Digite o Número", id="number", value=address.number)}}
         <label class="form__label" for="uf">UF</label>
-        <select class="form__input" value="{{ address.uf }}" name="uf" id="uf">
-          <option>Estado</option>
-        </select>
-        <button class="btn btn--form" type="submit">Atualizar Dados</button>
+        {{form.uf(class="form__input", id="uf", value=address.uf)}}
+        <button class="btn btn--form btn-medium" type="submit">Atualizar Dados</button>
       </form>
       {% else %}
         <h2 class="form__title">Cadastrar-se</h2>
@@ -69,7 +67,7 @@
         {{form.number(class="form__input", placeholder="Digite o Número", id="number")}}
         <label class="form__label" for="uf">UF</label>
         {{form.uf(class="form__input", id="uf")}}
-        <button class="btn btn--form" type="submit">Cadastrar</button>
+        <button class="btn btn--form btn-medium" type="submit">Cadastrar</button>
       </form>
       {% endif %}
     </div>

@@ -1,10 +1,10 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-    <main>
-        <section class="list">
+    <main class="max_height">
+        <section class="max_height list">
           <div class="list__container wrapper">
-            <h3 class="list__title">Lista de Usuários</h3>
+            <h3 class="sec__title sec__title--line">Lista de Usuários</h3>
             <div class="list__row list__row--header">
               <div class="list__item"><span>ID</span></div>
               <div class="list__item"><span>Nome</span></div>
@@ -13,9 +13,9 @@
             </div>
             {% for user in users %}
               <div class="list__row">
-                <div class="list__item"><span>ID</span></div>
-                <div class="list__item"><span>Nome</span></div>
-                <div class="list__item"><span>E-mail</span></div>
+                <div class="list__item"><span>{{ user.id }}</span></div>
+                <div class="list__item"><span>{{ user.name }}</span></div>
+                <div class="list__item"><span>{{ user.email }}</span></div>
                 <div class="list__item">
                   <a href="{{url_for('delete_user', user_id=user.id)}}">Excluir Usuário</a>
                   <a href="{{url_for('edit_user', user_id=user.id)}}">Editar Usuário</a>

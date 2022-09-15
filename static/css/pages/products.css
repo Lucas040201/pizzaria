@@ -16,7 +16,7 @@
     box-shadow: 0 0 1rem #cecece;
     border-radius: 1rem;
     padding: 2rem;
-    height: 30rem;
+    height: 40rem;
 }
 
 .product__figure {
@@ -71,4 +71,20 @@
     font-size: 1.6rem;
     color: #222;
     font-weight: bold;
+}
+
+.product__action {
+    padding: 1rem 0 2rem;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form__current_image {
+    padding: 2rem 0 1rem;
+    font-size: 1.6rem;
+}
+
+.form__current_image p {
+    padding-bottom: 2rem;
 }
