@@ -1,0 +1,36 @@
+.list {
+    padding: 20rem 0;
+}
+.list__row.list__row--header {
+    display: flex;
+    margin-top: 2rem;
+    border-bottom: 1px solid #000;
+    padding: 1rem 0;
+}
+
+.list__item {
+    flex: 1;
+    text-align: center;
+}
+
+.list__row {
+    display: flex;
+}
+
+.list__row.list__row--header .list__item {
+    font-size: 1.6rem;
+    padding: 1rem 0;
+}
+
+.list__row .list__item {
+    font-size: 1.4rem;
+    padding: 2rem 0;
+}
+
+.list__item a {
+    margin-left: 1rem;
+}
+
+.list__row:nth-child(odd) {
+    background-color: #cecece;
+}

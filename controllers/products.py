@@ -69,10 +69,10 @@ def edit_product_action(product_id):
             file = None
 
         updated = product_service.update_product(product_id, data, file)
-        return redirect(url_for('edit_product'), product_id=product_id)
+        return redirect(url_for('edit_product', product_id=product_id))
     except Exception as e:
         flash('Erro ao atualizar Produto')
-        return redirect(url_for('edit_product'), product_id=product_id)
+        return redirect(url_for('edit_product', product_id=product_id))
 
 
 @app.route('/excluir-produto/<product_id>', methods=['GET'])

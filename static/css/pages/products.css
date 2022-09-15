@@ -88,3 +88,10 @@
 .form__current_image p {
     padding-bottom: 2rem;
 }
+
+.product__new {
+    font-size: 1.8rem;
+    color: #222;
+    display: block;
+    margin-bottom: 3rem;
+}

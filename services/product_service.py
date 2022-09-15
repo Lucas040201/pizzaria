@@ -32,7 +32,8 @@ class ProductService(ServiceBase):
         updated_info = {}
 
         for info in data:
-            updated_info[info] = data[info]
+            if not info == 'csrf_token':
+                updated_info[info] = data[info]
 
         if not file is None:
             updated_info['image'] = self.__hash_image_and_move(file['image'])
