@@ -33,7 +33,8 @@ def login_action():
             login_user(user)
             return redirect(url_for('index'))
         else:
-            return 'senha invalida'
+            flash('Senha invalida')
+            return redirect(url_for('login'))
     return 'arroz'
 
 
