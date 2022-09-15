@@ -17,7 +17,8 @@ class ProductService(ServiceBase):
 
         product_info = {}
         for info in data:
-            product_info[info] = data[info]
+            if not info == 'csrf_token':
+                product_info[info] = data[info]
 
         product_info['image'] = self.__hash_image_and_move(file['image'])
         product_info['price'] = float(product_info['price'])
@@ -48,7 +49,7 @@ class ProductService(ServiceBase):
         hashed_filename = f"{str(hashed_filename)}.{ext}"
 
         filename = secure_filename(hashed_filename)
-        file.save(os.path.join("static/imagem/products/", filename))
+        file.save(os.path.join("static/imgs/products/", filename))
         return filename
 
     def __validate_info(self, data, file):

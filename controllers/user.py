@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app import app, is_admin
 
 from app.infra.exceptions.user_exists import UserExists
+from app.infra.exceptions.user_not_found import UserNotFound
 
 from app.services.address_service import AddressService
 from app.services.user_service import UserService
@@ -85,19 +86,45 @@ def delete_user(user_id: int):
 
 
 @app.route('/editar-usuario/<user_id>', methods=['GET'])
-@app.route('/editar-usuario', defaults={'user_id': None}, methods=['GET'])
 @login_required
-def edit_user(user_id=None):
+@is_admin
+def edit_user(user_id: int):
     """Edit an User"""
-    if user_id and current_user.role_id == 1:
+    try:
         user, address = user_service.get_user_with_address(user_id)
-    else:
-        user, address = user_service.get_user_with_address(current_user.id)
-    return render_template('signup.html', user=user, address=address, title="Editar Usuário")
+        return render_template('signup.html', user=user, address=address, title="Editar Usuário")
+    except UserNotFound as e:
+        flash('Usuário não encontrado')
+        return redirect(url_for('list_users'))
 
+
+@app.route('/editar-perfil', methods=['GET'])
+@login_required
+def edit_profile():
+    """Edit profile of current user"""
+    user, address = user_service.get_user_with_address(current_user.id)
+    return render_template('signup.html', user=user, address=address, title="Editar Perfil")
+
+
+@app.route('/editar-perfil-action', methods=['POST'])
+@login_required
+def edit_profile_action():
+    """Edit action profile of current user"""
+    try:
+        request_form = request.form
+        form = UserForm(request_form)
+        if form.validate():
+            address_id = form['address_id']
+            user_service.update_user(current_user.id, form)
+            address_service.update_address(address_id, form)
+            return redirect(url_for('edit_user', user_id=current_user.id))
+    except Exception as e:
+        flash('Erro ao atualizar usuário')
+        return redirect(url_for('list_users'))
 
 @app.route('/editar-usuario-action/<user_id>', methods=['POST'])
 @login_required
+@is_admin
 def edit_user_action(user_id):
     """Action for edit user"""
     try:

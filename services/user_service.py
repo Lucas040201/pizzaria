@@ -39,7 +39,7 @@ class UserService(ServiceBase):
     def get_user_with_address(self, user_id: int) -> {User, Address}:
         items = self.repository().get_user_with_address(user_id)
         if not items:
-            raise Exception
+            raise UserNotFound()
 
         user = items[0]
         address = items[1]

@@ -1,8 +1,8 @@
 {% extends 'layout/base.html' %}
 {% block content %}
 
-<main>
-    <section class="product">
+<main class="max_height">
+    <section class="max_height product">
         <div class="product__container wrapper">
             <h2 class="sec__title sec__title--line">Produtos</h2>
 
@@ -10,11 +10,12 @@
                 {% for product in products %}
                     <div class="product__item">
                         <figure class="product__figure">
-                            <img class="product__image" src="{{url_for('static', filename='imagem/products/%s' % product.image)}}">
+                            <img class="product__image" src="{{url_for('static', filename='imgs/products/%s' % product.image)}}">
                         </figure>
-                        <p class="product__name">{{product.name}}</p>
+                        <p class="product__name">{{product.product_name}}</p>
                         <p class="product__excerpt">{{product.excerpt}}</p>
-                        <p class="prodct_price"><span>R$</span>{{product.price}}</p>
+                        <p class="product__price"><span>R$</span>{{product.price}}</p>
+                        <span class="product__add" data-product="{{ product.id }}">Add carrinho</span>
                     </div>
                 {% endfor %}
             </div>

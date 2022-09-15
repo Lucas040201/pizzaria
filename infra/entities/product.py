@@ -4,13 +4,12 @@ from app import db
 class Product(db.Model):
     __tablename__ = 'products'
 
-    def __init__(self, product_name, price, description, excerpt, image=None):
+    def __init__(self, product_name, price, description, excerpt, image):
         self.product_name = product_name
         self.price = price
         self.description = description
         self.excerpt = excerpt
-        if not image is None:
-            self.image = image
+        self.image = image
 
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String)

@@ -69,3 +69,8 @@
     border-radius: 1rem;
     box-shadow: 0 0 1rem #999;
 }
+
+
+.max_height {
+    min-height: 100%;
+}

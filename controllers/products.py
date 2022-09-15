@@ -31,8 +31,7 @@ def store_product_action():
     """Action for store product"""
     try:
         form_request = request.form
-        form = ProductForm(request)
-        if form.validate():
+        if request.files:
             inserted_product = product_service.insert_product(form_request, request.files)
             return redirect(url_for('list_products'))
         flash('Campos invalidos')
