@@ -179,15 +179,16 @@ def edit_profile_action():
         request_form = request.form
         form = UserFormUpdate(request_form)
         if form.validate():
-            address_id = request_form['address_id']
             user_service.update_user(current_user.id, request_form)
-            print('hjdgadalj')
-            address_service.update_address(address_id, request_form)
-            return redirect(url_for('edit_user', user_id=current_user.id))
+            if current_user.address:
+                address_id = request_form['address_id']
+                address_service.update_address(address_id, request_form)
+            else:
+                address_service.insert_address(current_user, request_form)
+            return redirect(url_for('edit_profile'))
         flash('Campos invalidos')
         return redirect(url_for('edit_profile'))
     except Exception as e:
-        print(e)
         flash('Erro ao atualizar usuário')
         return redirect(url_for('list_users'))
 

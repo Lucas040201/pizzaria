@@ -43,9 +43,9 @@ class UserService(ServiceBase):
         address = items[1]
         return user, address
 
-    def update_user(self, user_id: int, data: []):
+    def update_user(self, user_id: int, data: {}):
         user = self.show(user_id)
-
+        print('atualizando')
         if not user:
             raise UserNotFound()
 
@@ -62,6 +62,8 @@ class UserService(ServiceBase):
                     new_user_info[x] = generate_password_hash(data[x])
                 else:
                     new_user_info[x] = data[x]
+
+        print(new_user_info)
 
         updated_user = self.update(user_id, new_user_info)
         return updated_user
