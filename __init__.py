@@ -30,4 +30,5 @@ def is_admin(func):
     return wrapper
 
 from app.controllers import default, user, products
+from app.controllers.api import user
 
