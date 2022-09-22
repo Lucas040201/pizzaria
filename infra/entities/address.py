@@ -20,5 +20,5 @@ class Address(db.Model):
     uf = db.Column(db.String)
 
     def __repr__(self):
-        return f"Address cep={self.cep}"
+        return f"Address cep={self.cep}, street={self.street}"
 

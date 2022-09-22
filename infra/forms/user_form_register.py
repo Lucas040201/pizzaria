@@ -1,7 +1,7 @@
 from wtforms import Form, StringField, PasswordField, SelectField, validators
 
 
-class UserForm(Form):
+class UserFormRegister(Form):
     name = StringField('Name', [validators.DataRequired()])
     email = StringField('Email Address', [validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired()])

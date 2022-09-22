@@ -1,5 +1,7 @@
 from app import db, login_manager
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 
 @login_manager.user_loader
@@ -27,6 +29,9 @@ class User(db.Model, UserMixin):
 
     def is_admin(self):
         return self.role_id == 1
+
+    def check_login(self, password: str):
+        return check_password_hash(self.password, password)
 
     def __repr__(self):
         return f"[User name={self.name} email={self.email}]"

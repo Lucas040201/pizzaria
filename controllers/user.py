@@ -9,7 +9,9 @@ from app.services.address_service import AddressService
 from app.services.user_service import UserService
 
 from app.infra.forms.login_form import LoginForm
-from app.infra.forms.user_form import UserForm
+from app.infra.forms.user_form_register import UserFormRegister
+from app.infra.forms.user_form_update import UserFormUpdate
+
 
 user_service = UserService()
 address_service = AddressService()
@@ -29,13 +31,12 @@ def login_action():
     form = LoginForm(form_submited)
     if form.validate():
         user = user_service.get_user_by_email(form_submited['email'])
-        if user and user_service.check_login(user, form_submited['password']):
+        if user and user.check_login(form_submited['password']):
             login_user(user)
             return redirect(url_for('index'))
         else:
             flash('Senha invalida')
             return redirect(url_for('login'))
-    return 'arroz'
 
 
 @app.route('/inscrever-se', methods=['GET'])
@@ -93,7 +94,7 @@ def edit_user(user_id: int):
     """Edit an User"""
     try:
         user, address = user_service.get_user_with_address(user_id)
-        form = UserForm()
+        form = UserFormUpdate()
         return render_template('signup.html', user=user, address=address, title="Editar Usuário", form=form)
     except UserNotFound as e:
         flash('Usuário não encontrado')
@@ -105,7 +106,7 @@ def edit_user(user_id: int):
 def edit_profile():
     """Edit profile of current user"""
     user, address = user_service.get_user_with_address(current_user.id)
-    form = UserForm()
+    form = UserFormUpdate()
     return render_template('signup.html', user=user, address=address, title="Editar Perfil", form=form)
 
 
@@ -115,15 +116,17 @@ def edit_profile_action():
     """Edit action profile of current user"""
     try:
         request_form = request.form
-        form = UserForm(request_form)
+        form = UserFormUpdate(request_form)
         if form.validate():
-            address_id = form['address_id']
-            user_service.update_user(current_user.id, form)
-            address_service.update_address(address_id, form)
+            address_id = request_form['address_id']
+            user_service.update_user(current_user.id, request_form)
+            print('hjdgadalj')
+            address_service.update_address(address_id, request_form)
             return redirect(url_for('edit_user', user_id=current_user.id))
         flash('Campos invalidos')
         return redirect(url_for('edit_profile'))
     except Exception as e:
+        print(e)
         flash('Erro ao atualizar usuário')
         return redirect(url_for('list_users'))
 
@@ -134,7 +137,8 @@ def edit_user_action(user_id):
     """Action for edit user"""
     try:
         request_form = request.form
-        form = UserForm(request_form)
+        form = UserFormUpdate(request_form)
+
         if form.validate():
             address_id = form['address_id']
             user_service.update_user(user_id, form)

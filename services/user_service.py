@@ -19,15 +19,13 @@ class UserService(ServiceBase):
         if user:
             raise UserExists()
 
-        password = generate_password_hash(data['password'])
-
         role_id = 2
         if 'role_id' in data:
             role_id = data['role_id']
 
         new_user = {
             "name": data['name'],
-            "password": password,
+            "password": data['password'],
             "email": data['email'],
             "phone": data['phone'],
             "role_id": role_id,
@@ -52,27 +50,24 @@ class UserService(ServiceBase):
             raise UserNotFound()
 
         user_info = {
-            "name": data['name'],
-            "email": data['email'],
-            "phone": data['phone'],
+            "name": None,
+            "email": None,
+            "phone": None,
+            "password": None
         }
+        new_user_info = {}
+        for x in data:
+            if data[x] and x in user_info:
+                if x == 'password':
+                    new_user_info[x] = generate_password_hash(data[x])
+                else:
+                    new_user_info[x] = data[x]
 
-        if 'password' in data:
-            user_info['password'], user_info['salt'] = self.__generate_password(data['password'])
-
-        updated_user = self.update(user_id, user_info)
-
+        updated_user = self.update(user_id, new_user_info)
         return updated_user
 
-    def __generate_password(self, password: str) -> str:
-        salt = bcrypt.gensalt()
-        password = password.encode('utf8')
-        password = bcrypt.hashpw(password, salt)
-        return password, salt
 
     def get_user_by_email(self, email: str) -> User:
         return self.repository().get_user_by_email(email)
 
-    def check_login(self, user: User, password: str) -> bool:
-        return check_password_hash(user.password, password)
 

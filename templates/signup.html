@@ -25,6 +25,7 @@
             {% endif %}
 
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="address_id" value="{{ address.id }}"/>
         <label class="form__label" for="name">Nome</label>
         {{form.name(class="form__input", placeholder="Digite o seu nome", id="name", value=user.name)}}
         <label class="form__label" for="email">E-mail</label>

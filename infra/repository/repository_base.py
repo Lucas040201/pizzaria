@@ -47,7 +47,8 @@ class RepositoryBase(ABC):
                 instance = db.session.query(self.__model).filter(self.__model.id == instance_id).update(data)
                 db.session.commit()
                 return instance
-            except:
+            except Exception as e:
+                print(e)
                 db.session.rollback()
 
     def show(self, instance_id: int):
