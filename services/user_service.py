@@ -12,7 +12,7 @@ class UserService(ServiceBase):
     def __init__(self):
         super(UserService, self).__init__(UserRepository())
 
-    def insert_user(self, data: []) -> User:
+    def insert_user(self, data: {}) -> User:
 
         user = self.repository().get_user_by_email(data['email'])
 

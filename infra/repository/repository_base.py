@@ -29,7 +29,8 @@ class RepositoryBase(ABC):
                 db.session.commit()
 
                 return instance
-            except:
+            except Exception as e:
+                print(e)
                 db.session.rollback()
 
     def delete(self, instance_id: int):
@@ -38,7 +39,8 @@ class RepositoryBase(ABC):
                 deleted = db.session.query(self.__model).filter(self.__model.id == instance_id).delete()
                 db.session.commit()
                 return deleted
-            except:
+            except Exception as e:
+                print(e)
                 db.session.rollback()
 
     def update(self, instance_id: int, data: {}):
@@ -56,5 +58,6 @@ class RepositoryBase(ABC):
             try:
                 data = db.session.query(self.__model).filter(self.__model.id == instance_id).first()
                 return data
-            except:
+            except  Exception as e:
+                print(e)
                 db.session.rollback()

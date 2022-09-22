@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from app import app, is_admin
+from app import app, is_admin, get_google_provider_cfg, client, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 
 from app.infra.exceptions.user_exists import UserExists
 from app.infra.exceptions.user_not_found import UserNotFound
@@ -11,6 +11,9 @@ from app.services.user_service import UserService
 from app.infra.forms.login_form import LoginForm
 from app.infra.forms.user_form_register import UserFormRegister
 from app.infra.forms.user_form_update import UserFormUpdate
+
+import requests
+import json
 
 
 user_service = UserService()
@@ -23,6 +26,65 @@ def login():
     form = LoginForm()
     return render_template('login.html', form=form, title="Fazer Login")
 
+
+@app.route('/login-google')
+def login_google():
+    google_provider_cfg = get_google_provider_cfg()
+    authorization_endpoint = google_provider_cfg["authorization_endpoint"]
+
+    request_uri = client.prepare_request_uri(
+        authorization_endpoint,
+        redirect_uri=request.base_url + "/callback",
+        scope=["openid", "email", "profile"],
+    )
+    return redirect(request_uri)
+
+@app.route('/login-google/callback')
+def login_google_callback():
+    code = request.args.get("code")
+    google_provider_cfg = get_google_provider_cfg()
+    token_endpoint = google_provider_cfg["token_endpoint"]
+
+    token_url, headers, body = client.prepare_token_request(
+        token_endpoint,
+        authorization_response=request.url,
+        redirect_url=request.base_url,
+        code=code
+    )
+
+    token_response = requests.post(
+        token_url,
+        headers=headers,
+        data=body,
+        auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
+    )
+
+    client.parse_request_body_response(json.dumps(token_response.json()))
+    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+    uri, headers, body = client.add_token(userinfo_endpoint)
+    userinfo_response = requests.get(uri, headers=headers, data=body)
+
+    if userinfo_response.json().get("email_verified"):
+        users_email = userinfo_response.json()["email"]
+        users_name = userinfo_response.json()["given_name"]
+
+        user = user_service.get_user_by_email(users_email)
+
+        if user:
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            data = {
+                'name': users_name,
+                'email': users_email,
+                'password': '123',
+                'phone': None
+            }
+            user = user_service.insert_user(data)
+            login_user(user)
+            return redirect(url_for('index'))
+    else:
+        return "E-mail invalido ou não verificaod pelo google", 400
 
 @app.route('/login-action', methods=['POST'])
 def login_action():
@@ -42,7 +104,7 @@ def login_action():
 @app.route('/inscrever-se', methods=['GET'])
 def signup():
     """Signup view"""
-    form = UserForm()
+    form = UserFormRegister()
     return render_template('signup.html', form=form, title="Cadastrar-se")
 
 
@@ -51,7 +113,7 @@ def signup_action():
     """Action for signup user"""
     try:
         request_form = request.form
-        form = UserForm(request_form)
+        form = UserFormRegister(request_form)
         if form.validate():
             user = user_service.insert_user(request_form)
             address_service.insert_address(user, request_form)
@@ -105,9 +167,8 @@ def edit_user(user_id: int):
 @login_required
 def edit_profile():
     """Edit profile of current user"""
-    user, address = user_service.get_user_with_address(current_user.id)
     form = UserFormUpdate()
-    return render_template('signup.html', user=user, address=address, title="Editar Perfil", form=form)
+    return render_template('signup.html', title="Editar Perfil", form=form)
 
 
 @app.route('/editar-perfil-action', methods=['POST'])

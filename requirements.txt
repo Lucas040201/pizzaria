@@ -4,4 +4,5 @@ flask_sqlalchemy
 flask_migrate
 flask-wtf
 flask-login
+oauthlib
 bcrypt

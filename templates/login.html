@@ -18,6 +18,7 @@
                     <label class="form__label" for="password">Senha</label>
                     {{form.password(class="form__input", id="password", placeholder="Digite a sua senha", type="password")}}
                     <button class="btn btn--form" type="submit">Entrar</button>
+                    <a class="btn" href="{{ url_for('login_google') }}">Login com o Google</a>
                 </form>
             </div>
         </div>
