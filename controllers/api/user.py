@@ -20,7 +20,7 @@ address_service = AddressService()
 @app.route('/api/login', methods=['POST'])
 @csrf.exempt
 def login_api():
-    """Login view"""
+    """User Login"""
     if not 'password' in request.json or not 'email' in request.json:
         return jsonify({
             "message": "Insira as informacoes de login corretamente"
@@ -50,6 +50,7 @@ def login_api():
 @csrf.exempt
 @auth_required
 def profile_api(current_user):
+    """User Profile"""
     if not len(current_user.address):
         return jsonify({'error': 'Usuário não possui endereço'}), 400
 
@@ -62,6 +63,7 @@ def profile_api(current_user):
 @csrf.exempt
 @auth_required
 def profile_update_api(current_user):
+    """Update user profile"""
     if not len(current_user.address):
         return jsonify({'error': 'Usuário não possui endereço'}), 400
     try:
