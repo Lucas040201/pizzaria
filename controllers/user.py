@@ -91,6 +91,20 @@ def login_action():
     """Action for user login"""
     form_submited = request.form
     form = LoginForm(form_submited)
+
+    if not form_submited['g-recaptcha-response']:
+        flash('Preencha o Recaptcha')
+        return redirect(url_for('login'))
+
+    recaptcha_url = "https://www.google.com/recaptcha/api/siteverify"
+    data = {'secret': '6LdQj1oiAAAAAGHV3QeiswzeFVD3aeTm14ZZltF1', 'response' : form_submited['g-recaptcha-response']}
+    result = requests.post(url=recaptcha_url, params=data)
+    data = result.json()
+
+    if(not data['success']):
+        flash('O Token do Recpatcha é inválido')
+        return redirect(url_for('login'))
+
     if form.validate():
         user = user_service.get_user_by_email(form_submited['email'])
         if user and user.check_login(form_submited['password']):

@@ -76,13 +76,28 @@ $(function(){
 
 
 
+    function checkRecpatcha(form) {
+        form.on('submit', event => {
+            if(grecaptcha.getResponse()) {
+                return true;
+            }
 
+            alert('Selecione o campo "Eu não sou um Robô"');
+            event.preventDefault();
+        })
+
+
+    }
 
 
 
     addToCart();
 
     checkCartQuantity();
+
+    if($('.submited__form')) {
+        checkRecpatcha($('.submited__form'))
+    }
 
     if($('.form__page')) {
         userForm();

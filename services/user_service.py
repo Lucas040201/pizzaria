@@ -4,7 +4,7 @@ from app.services.service_base import ServiceBase
 from app.infra.exceptions.user_exists import UserExists
 from app.infra.entities.user import User
 from app.infra.entities.address import Address
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 import bcrypt
 
 
@@ -25,7 +25,7 @@ class UserService(ServiceBase):
 
         new_user = {
             "name": data['name'],
-            "password": data['password'],
+            "password": generate_password_hash(data['password']),
             "email": data['email'],
             "phone": data['phone'],
             "role_id": role_id,
