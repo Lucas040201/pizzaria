@@ -43,6 +43,6 @@ def is_admin(func):
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
 
-from app.controllers import default, user, products
+from app.controllers import default, user, products, payment, order
 from app.controllers.api import user
 

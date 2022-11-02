@@ -26,6 +26,7 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     address = db.relationship('Address', backref=db.backref('users'), lazy='subquery')
+    order = db.relationship('Order', backref=db.backref('users'), lazy='subquery')
 
     def is_admin(self):
         return self.role_id == 1

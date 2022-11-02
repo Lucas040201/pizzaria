@@ -19,7 +19,6 @@ $(function(){
         }) ;
     }
 
-
     function addToCart() {
         $('.product__add').on('click', e => {
            const currentProduct = {};
@@ -54,16 +53,12 @@ $(function(){
         });
     }
 
-
-
     function checkCartQuantity() {
         const cart = $('.cart').find('span');
         const items = JSON.parse(localStorage.getItem('products'));
         if (!items) return;
         let quantity = 0;
-        console.log(items.length)
         if(items.length === 1) {
-            console.log('aqui')
            quantity = items[0].quantity;
         } else {
             quantity = items.reduce((prevValue, prod) => {
@@ -72,9 +67,6 @@ $(function(){
         }
         cart.text(quantity);
     }
-
-
-
 
     function checkRecpatcha(form) {
         form.on('submit', event => {
@@ -88,6 +80,53 @@ $(function(){
 
 
     }
+
+    function processPayment() {
+        const products = JSON.parse(localStorage.getItem('products'));
+
+        if(!products) {
+            removeSectionProccessPayment();
+        }
+        const $currentProductItem = $('.payment__item');
+        const $productClone = $currentProductItem.clone();
+        $currentProductItem.remove();
+
+        let totalPrice = 0;
+        for(product of products) {
+            const currentPrice = product.quantity * product.price;
+            totalPrice += currentPrice;
+            const $currentProduct = $productClone.clone();
+
+            $currentProduct.find('.payment__product_image').attr('src', product.img);
+            $currentProduct.find('.payment__product_title').text(product.name);
+            $currentProduct.find('.payment__product_qtt_item').text(product.quantity);
+            $currentProduct.find('.payment__product_money').text(currentPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+
+            $('.payment__items').append($currentProduct);
+        }
+
+        $('.payment__actions_price_total').text(totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+
+
+    }
+
+
+    function removeSectionProccessPayment() {
+            $('.payment__columns').remove();
+            const section = document.createElement('section');
+            section.classList.add('payment__empty');
+            section.classList.add('wrapper');
+            const h2 = document.createElement('h2');
+            h2.innerText = 'Não há produtos no seu carrinho.'
+            h2.classList.add('payment__empty_title');
+            section.append(h2);
+            $('.payment__confirm').append(section);
+    }
+
+    if($('.payment__confirm').length) {
+        processPayment();
+    }
+
 
 
 
@@ -103,3 +142,65 @@ $(function(){
         userForm();
     }
 });
+
+
+
+
+function initPayPalButton() {
+    const products = JSON.parse(localStorage.getItem('products'));
+
+    let totalPrice = 0;
+
+    for(product of products) {
+        totalPrice += product.quantity * product.price;
+    }
+
+  paypal.Buttons({
+    style: {
+      shape: 'pill',
+      color: 'gold',
+      layout: 'horizontal',
+      label: 'checkout',
+      tagline: true
+    },
+
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{"amount":{"currency_code":"BRL","value":totalPrice}}]
+      });
+    },
+
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(orderData) {
+          fetch(`${window.location.origin}/pedido`, {
+              method: 'POST',
+              body: JSON.stringify({
+                  products: JSON.parse(localStorage.getItem('products'))
+              })
+            }).then(response => {
+                return JSON.parse(response)
+            }).then(data => {
+                localStorage.clear();
+                if(data.error) {
+                    alert("Erro ao criar o pedido");
+                    window.location.href = window.location.origin;
+                }
+                alert("Pedido Criado com sucesso");
+                window.location.href = `${window.location.origin}/pedido/${data.order_id}`;
+          }).catch(err => {
+              localStorage.clear();
+              alert("Houve um erro ao tentar criar o pedido, tente novamente mais tarde");
+              console.log(err);
+            })
+
+      });
+    },
+
+    onError: function(err) {
+      console.log(err);
+    }
+  }).render('#paypal-button-container');
+}
+if(document.querySelector('#paypal-button-container')) {
+    initPayPalButton();
+}
