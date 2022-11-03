@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <main class="max_height">
+        <section class="max_height list">
+          <div class="list__container wrapper">
+          {% if not current_user.order %}
+              <h3 class="sec__title sec__title--line">Não há pedidos</h3>
+          {% else %}
+            <h3 class="sec__title sec__title--line">Pedidos</h3>
+            <div class="list__row list__row--header">
+              <div class="list__item"><span>ID</span></div>
+              <div class="list__item"><span>Total</span></div>
+              <div class="list__item"><span>status</span></div>
+            </div>
+            {% for order in current_user.order %}
+              <div class="list__row">
+                <div class="list__item"><span>{{ order.id }}</span></div>
+                <div class="list__item"><span>{{ order.get_amount() }}</span></div>
+                <div class="list__item"><span>{{ order.status }}</span></div>
+              </div>
+            {% endfor %}
+          {% endif %}
+          </div>
+        </section>
+    </main>
+
+{% endblock %}

@@ -172,13 +172,17 @@ function initPayPalButton() {
 
     onApprove: function(data, actions) {
       return actions.order.capture().then(function(orderData) {
-          fetch(`${window.location.origin}/pedido`, {
+          fetch(`${window.location.origin}/pedidos`, {
               method: 'POST',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
               body: JSON.stringify({
                   products: JSON.parse(localStorage.getItem('products'))
               })
             }).then(response => {
-                return JSON.parse(response)
+                return response.json();
             }).then(data => {
                 localStorage.clear();
                 if(data.error) {
@@ -186,12 +190,14 @@ function initPayPalButton() {
                     window.location.href = window.location.origin;
                 }
                 alert("Pedido Criado com sucesso");
-                window.location.href = `${window.location.origin}/pedido/${data.order_id}`;
+                // window.location.href = `${window.location.origin}/pedidos/${data.order_id}`;
+                window.location.href = `${window.location.origin}/pedidos`;
+
           }).catch(err => {
               localStorage.clear();
               alert("Houve um erro ao tentar criar o pedido, tente novamente mais tarde");
-              console.log(err);
-            })
+              console.log(JSON.parse(err));
+            });
 
       });
     },

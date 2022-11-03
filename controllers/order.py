@@ -8,7 +8,7 @@ order_service = OrderService()
 
 @login_required
 @csrf.exempt
-@app.route('/pedido', methods=['POST'])
+@app.route('/pedidos', methods=['POST'])
 def create_order():
     try:
         products = request.json['products']
@@ -24,10 +24,16 @@ def create_order():
         return jsonify({
             "error": 0,
             "order_id": order.id
-        })
+        }), 200
     except Exception as e:
         print(e)
         return jsonify({
             "message": "Ocorreu um erro inesperado ao tentar criar o pedido",
             "error": 1
         }), 500
+
+
+@login_required
+@app.route('/pedidos')
+def list_orders():
+    return render_template('list-orders.html')
