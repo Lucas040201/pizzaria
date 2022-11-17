@@ -1,4 +1,7 @@
 from flask_login import login_user
+from werkzeug.security import generate_password_hash
+import bcrypt
+
 from app.infra.exceptions.user_not_found import UserNotFound
 from app.infra.repository.user_repository import UserRepository
 from app.services.service_base import ServiceBase
@@ -6,8 +9,8 @@ from app.infra.exceptions.user_exists import UserExists
 from app.infra.entities.user import User
 from app.infra.entities.address import Address
 from app.infra.forms.login_form import LoginForm
-from werkzeug.security import generate_password_hash
-import bcrypt
+from app.infra.forms.user_form_register import UserFormRegister
+from app.infra.forms.user_form_update import UserFormUpdate
 
 from app.infra.exceptions.user_exists import UserExists
 from app.infra.exceptions.user_not_found import UserNotFound
@@ -26,12 +29,17 @@ class UserService(ServiceBase):
         super(UserService, self).__init__(UserRepository())
         self.__google_service = GoogleService()
 
-    def insert_user(self, data: {}) -> User:
+    def insert_user(self, data: {}, google=False) -> User:
+        if not google:
+            form = UserFormRegister(data)
+
+            if not form.validate():
+                raise InvalidForm('Por favor, verifique os campos e preencha corretamente')
 
         user = self.repository().get_user_by_email(data['email'])
 
         if user:
-            raise UserExists()
+            raise UserExists('E-mail ja cadastrado. Por favor, insira um novo e-mail')
 
         role_id = 2
         if 'role_id' in data:
@@ -58,10 +66,15 @@ class UserService(ServiceBase):
         return user, address
 
     def update_user(self, user_id: int, data: {}):
+
+        form = UserFormUpdate(data)
+
+        if not form.validate():
+            raise InvalidForm('Formulario invalido. Por favor, verifique e preencha os campos corretamente')
+
         user = self.show(user_id)
-        print('atualizando')
         if not user:
-            raise UserNotFound()
+            raise UserNotFound('Usuário não encontrado')
 
         user_info = {
             "name": None,
@@ -77,15 +90,13 @@ class UserService(ServiceBase):
                 else:
                     new_user_info[x] = data[x]
 
-        print(new_user_info)
-
         updated_user = self.update(user_id, new_user_info)
         return updated_user
 
     def get_user_by_email(self, email: str) -> User:
         return self.repository().get_user_by_email(email)
 
-    def make_login(self, form_data: []):
+    def make_login(self, form_data: {}):
         form = LoginForm(form_data)
 
         if not form.validate():
@@ -128,5 +139,5 @@ class UserService(ServiceBase):
                     'password': '123',
                     'phone': None
                 }
-                user = self.insert_user(data)
+                user = self.insert_user(data, True)
                 login_user(user)

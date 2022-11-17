@@ -4,6 +4,17 @@
     <main class="max_height">
         <section class="max_height list">
           <div class="list__container wrapper">
+            <div class="tab-content">
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  <ul class=flashes>
+                  {% for message in messages %}
+                    <li>{{ message }}</li>
+                  {% endfor %}
+                  </ul>
+                {% endif %}
+              {% endwith %}
+            </div>
             <h3 class="sec__title sec__title--line">Lista de Usuários</h3>
             <div class="list__row list__row--header">
               <div class="list__item"><span>ID</span></div>
