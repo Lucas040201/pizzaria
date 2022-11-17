@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import logout_user, login_required, current_user
-from app import app, is_admin, get_google_provider_cfg, client, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+from app import app, is_admin
 
 from app.infra.exceptions.user_exists import UserExists
 from app.infra.exceptions.user_not_found import UserNotFound
