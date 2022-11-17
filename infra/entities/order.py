@@ -9,6 +9,7 @@ class Order(db.Model):
     order_date = db.Column(db.DateTime)
     status = db.Column(db.String)
     order_products = db.relationship('OrderProduct', backref=db.backref('orders'), lazy='subquery')
+    user = db.relationship('User', backref=db.backref('orders'), lazy='subquery')
 
     def __init(self, user_id, order_date):
         self.user_id = user_id

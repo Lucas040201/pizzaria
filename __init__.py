@@ -20,8 +20,8 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 migrate = Migrate(app, db)
 
-GOOGLE_CLIENT_ID = '1056008821909-1mvne7vrsddq27t082dlh1iu3nr7g0l2.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_CLIENT_ID = '900605315642-0u7l7qgvmveutmc4qr2k8nc63mpp7d14.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = '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'
 GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
 )

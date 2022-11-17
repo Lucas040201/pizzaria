@@ -1,16 +1,30 @@
+from flask_login import login_user
 from app.infra.exceptions.user_not_found import UserNotFound
 from app.infra.repository.user_repository import UserRepository
 from app.services.service_base import ServiceBase
 from app.infra.exceptions.user_exists import UserExists
 from app.infra.entities.user import User
 from app.infra.entities.address import Address
+from app.infra.forms.login_form import LoginForm
 from werkzeug.security import generate_password_hash
 import bcrypt
 
+from app.infra.exceptions.user_exists import UserExists
+from app.infra.exceptions.user_not_found import UserNotFound
+from app.infra.exceptions.wrong_password import WrongPassword
+from app.infra.exceptions.invalid_form import InvalidForm
+from app.infra.exceptions.captcha_not_send import CaptchaNotSend
+from app.infra.exceptions.invalid_captcha import InvalidCaptcha
+
+from app.services.google_service import GoogleService
+
 
 class UserService(ServiceBase):
+    _google_service: GoogleService
+
     def __init__(self):
         super(UserService, self).__init__(UserRepository())
+        self.__google_service = GoogleService()
 
     def insert_user(self, data: {}) -> User:
 
@@ -68,8 +82,51 @@ class UserService(ServiceBase):
         updated_user = self.update(user_id, new_user_info)
         return updated_user
 
-
     def get_user_by_email(self, email: str) -> User:
         return self.repository().get_user_by_email(email)
 
+    def make_login(self, form_data: []):
+        form = LoginForm(form_data)
 
+        if not form.validate():
+            raise InvalidForm('Formulário invalido, preencha os campos corretamente')
+
+        if not form_data['g-recaptcha-response']:
+            raise CaptchaNotSend('Por favor, selecione a caixa abaixo')
+
+        if not self.__google_service.make_recaptcha_request(form_data['g-recaptcha-response']):
+            raise InvalidCaptcha('Captcha invalido. Por favor, marque a caixa abaixo')
+
+        user = self.get_user_by_email(form_data['email'])
+
+        if not user:
+            raise UserNotFound('Usuário não encontrado e/ou senha invalida')
+
+        if not user.check_login(form_data['password']):
+            raise WrongPassword('Usuário não encontrado e/ou senha invalida')
+
+        login_user(user)
+
+
+    def google_redirect(self):
+        return self.__google_service.get_google_redirect_uri()
+
+    def make_google_login(self):
+        response = self.__google_service.get_google_user()
+        if response.json().get("email_verified"):
+            users_email = response.json()["email"]
+            users_name = response.json()["given_name"]
+
+            user = self.get_user_by_email(users_email)
+
+            if user:
+                login_user(user)
+            else:
+                data = {
+                    'name': users_name,
+                    'email': users_email,
+                    'password': '123',
+                    'phone': None
+                }
+                user = self.insert_user(data)
+                login_user(user)

@@ -11,6 +11,17 @@
             </div>
             <div class="login__form">
                 <h2 class="form__title">Faça seu Login</h2>
+                        <div class="tab-content">
+                          {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                              <ul class=flashes>
+                              {% for message in messages %}
+                                <li>{{ message }}</li>
+                              {% endfor %}
+                              </ul>
+                            {% endif %}
+                          {% endwith %}
+                        </div>
                 <form action="{{url_for('login_action')}}" method="post" >
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <label class="form__label" for="email">E-mail:</label>

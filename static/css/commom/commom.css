@@ -74,3 +74,9 @@
 .max_height {
     min-height: 100%;
 }
+
+.flashes li {
+  font-size: 1.6rem;
+  color: #f00;
+  list-style-type: none;
+}

@@ -36,4 +36,9 @@ def create_order():
 @login_required
 @app.route('/pedidos')
 def list_orders():
-    return render_template('list-orders.html')
+    orders = []
+
+    if current_user.is_admin():
+        orders = order_service.list()
+
+    return render_template('list-orders.html', orders=orders)

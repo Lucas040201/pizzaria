@@ -1,5 +1,5 @@
 from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import logout_user, login_required, current_user
 from app import app, is_admin, get_google_provider_cfg, client, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 
 from app.infra.exceptions.user_exists import UserExists
@@ -11,10 +11,6 @@ from app.services.user_service import UserService
 from app.infra.forms.login_form import LoginForm
 from app.infra.forms.user_form_register import UserFormRegister
 from app.infra.forms.user_form_update import UserFormUpdate
-
-import requests
-import json
-
 
 user_service = UserService()
 address_service = AddressService()
@@ -29,90 +25,32 @@ def login():
 
 @app.route('/login-google')
 def login_google():
-    google_provider_cfg = get_google_provider_cfg()
-    authorization_endpoint = google_provider_cfg["authorization_endpoint"]
-
-    request_uri = client.prepare_request_uri(
-        authorization_endpoint,
-        redirect_uri=request.base_url + "/callback",
-        scope=["openid", "email", "profile"],
-    )
+    request_uri = user_service.google_redirect()
     return redirect(request_uri)
+
 
 @app.route('/login-google/callback')
 def login_google_callback():
-    code = request.args.get("code")
-    google_provider_cfg = get_google_provider_cfg()
-    token_endpoint = google_provider_cfg["token_endpoint"]
+    try:
+        user_service.make_google_login()
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('login'))
 
-    token_url, headers, body = client.prepare_token_request(
-        token_endpoint,
-        authorization_response=request.url,
-        redirect_url=request.base_url,
-        code=code
-    )
-
-    token_response = requests.post(
-        token_url,
-        headers=headers,
-        data=body,
-        auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
-    )
-
-    client.parse_request_body_response(json.dumps(token_response.json()))
-    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
-    uri, headers, body = client.add_token(userinfo_endpoint)
-    userinfo_response = requests.get(uri, headers=headers, data=body)
-
-    if userinfo_response.json().get("email_verified"):
-        users_email = userinfo_response.json()["email"]
-        users_name = userinfo_response.json()["given_name"]
-
-        user = user_service.get_user_by_email(users_email)
-
-        if user:
-            login_user(user)
-            return redirect(url_for('index'))
-        else:
-            data = {
-                'name': users_name,
-                'email': users_email,
-                'password': '123',
-                'phone': None
-            }
-            user = user_service.insert_user(data)
-            login_user(user)
-            return redirect(url_for('index'))
-    else:
-        return "E-mail invalido ou não verificaod pelo google", 400
 
 @app.route('/login-action', methods=['POST'])
 def login_action():
     """Action for user login"""
-    form_submited = request.form
-    form = LoginForm(form_submited)
+    try:
+        form_submited = request.form
 
-    if not form_submited['g-recaptcha-response']:
-        flash('Preencha o Recaptcha')
+        user_service.make_login(form_submited)
+
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
         return redirect(url_for('login'))
-
-    recaptcha_url = "https://www.google.com/recaptcha/api/siteverify"
-    data = {'secret': '6LdQj1oiAAAAAGHV3QeiswzeFVD3aeTm14ZZltF1', 'response' : form_submited['g-recaptcha-response']}
-    result = requests.post(url=recaptcha_url, params=data)
-    data = result.json()
-
-    if(not data['success']):
-        flash('O Token do Recpatcha é inválido')
-        return redirect(url_for('login'))
-
-    if form.validate():
-        user = user_service.get_user_by_email(form_submited['email'])
-        if user and user.check_login(form_submited['password']):
-            login_user(user)
-            return redirect(url_for('index'))
-        else:
-            flash('Senha invalida')
-            return redirect(url_for('login'))
 
 
 @app.route('/inscrever-se', methods=['GET'])
@@ -205,6 +143,7 @@ def edit_profile_action():
     except Exception as e:
         flash('Erro ao atualizar usuário')
         return redirect(url_for('list_users'))
+
 
 @app.route('/editar-usuario-action/<user_id>', methods=['POST'])
 @login_required
