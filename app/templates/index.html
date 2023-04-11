@@ -1,0 +1,35 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+
+    <main>
+    <section class="banner">
+        <div class="banner__background"></div>
+        <div class="wrapper banner__container">
+            <div class="banner__call">
+                <h2>A tradição feita em Pedaços</h2>
+                <a class="btn btn-medium" href="#">Ver todos os Produtos</a>
+            </div>
+        </div>
+    </section>
+    <section class="about" id="sobre">
+        <h3 class="sec__title sec__title--line"><span>Sobre</span></h3>
+        <div class="about__container wrapper">
+            <div class="about__content">
+                <p>PIZZARIA EM SÃO PAULO COM 30 ANOS DE TRADIÇÃO, PRIMANDO PELA QUALIDADE E UMA FARTA COMBINAÇÃO DE INGREDIENTES</p>
+                <p>Desde sua inauguração em 1987, a Tierra Pizzaria prima por sua qualidade. São 30 anos de tradição, trabalhando sempre com os melhores produtos e oferecendo um atendimento diferenciado. Hoje a Tierra Pizzaria está entre as melhores pizzarias de São Paulo. Caracterizada por sua massa fina e crocante, a pizza é coberta com as mais deliciosas e fartas combinações de ingredientes.
+
+                    Nossos produtos são assados em forno a lenha, o que confere à esta pizza um visual e sabor inigualáveis. Além de pizzas, hoje a Tierra Pizzaria também oferece calzones e baguetes, mantendo sempre a excelência de qualidade.
+
+                </p>
+                <p>A Pizzaria Tierra conta com salão com capacidade para até 60 pessoas, atendimento para viagem, delivery e pedido online.</p>
+            </div>
+            <div class="about__image">
+                <figure class="about__figure">
+                    <img src="{{url_for('static', filename='imgs/sobre.jpg')}}">
+                </figure>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}

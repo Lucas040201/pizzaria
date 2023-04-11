@@ -1,0 +1,14 @@
+.footer {
+    background-color: #222;
+    padding: 2rem 0;
+}
+
+.footer__text {
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.footer__text span {
+    color: #F88709;
+}
