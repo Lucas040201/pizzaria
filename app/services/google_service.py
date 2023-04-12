@@ -3,13 +3,14 @@ from flask import request
 
 import requests
 import json
+import os
 
 
 class GoogleService:
 
     def make_recaptcha_request(self, captcha_token: str) -> bool:
         recaptcha_url = "https://www.google.com/recaptcha/api/siteverify"
-        data = {'secret': '6LdQj1oiAAAAAGHV3QeiswzeFVD3aeTm14ZZltF1', 'response': captcha_token}
+        data = {'secret': os.getenv("GOOGLE_CAPTCHA_KEY", default=""), 'response': captcha_token}
         result = requests.post(url=recaptcha_url, params=data)
         data = result.json()
 

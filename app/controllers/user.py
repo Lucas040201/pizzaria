@@ -12,6 +12,8 @@ from app.infra.forms.user_form_register import UserFormRegister
 from app.infra.forms.login_form import LoginForm
 from app.infra.forms.user_form_update import UserFormUpdate
 
+import os
+
 user_service = UserService()
 address_service = AddressService()
 
@@ -20,7 +22,8 @@ address_service = AddressService()
 def login():
     """Login view"""
     form = LoginForm()
-    return render_template('login.html', form=form, title="Fazer Login")
+    return render_template('login.html', form=form, title="Fazer Login", captcha=os.getenv("GOOGLE_CAPTCHA_SITE_KEY",
+                                                                                           default=""))
 
 
 @app.route('/login-google')

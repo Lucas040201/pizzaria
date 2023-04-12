@@ -31,7 +31,7 @@
                     <button class="btn btn--form" type="submit">Entrar</button>
                     <a class="btn btn-medium btn-google" href="{{ url_for('login_google') }}">Login com o Google</a>
 
-                    <div class="g-recaptcha" data-sitekey="6LdQj1oiAAAAAPiT--IKkhBpOWB1jXXibneHr7xI"></div>
+                    <div class="g-recaptcha" data-sitekey="{{ captcha }}"></div>
                 </form>
             </div>
         </div>
