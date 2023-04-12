@@ -1,3 +1,4 @@
+import os
 from functools import wraps
 
 from flask import Flask, Blueprint, redirect, url_for, request
@@ -7,6 +8,7 @@ from flask_wtf import CSRFProtect
 from flask_login import LoginManager, current_user
 from oauthlib.oauth2 import WebApplicationClient
 import requests
+import os
 
 app = Flask(__name__)
 app.config.from_object('app.config')
@@ -20,8 +22,8 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 migrate = Migrate(app, db)
 
-GOOGLE_CLIENT_ID = '900605315642-0u7l7qgvmveutmc4qr2k8nc63mpp7d14.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', default="")
+GOOGLE_CLIENT_SECRET = os.getenv('GOOLE_SECRET_KEY', default="")
 GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
 )
